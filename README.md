@@ -1,264 +1,161 @@
-# Transparent Public Infrastructure Maintenance System
+# Secure Healthcare Provider Credentialing System
+
+A blockchain-based solution for managing healthcare provider credentials, qualifications, hospital privileges, and insurance network participation.
 
 ## Overview
 
-This blockchain-based platform revolutionizes public infrastructure management by creating a transparent, immutable record of assets, inspections, maintenance, and performance. By leveraging distributed ledger technology, the system ensures accountability in infrastructure spending, optimal maintenance scheduling, and data-driven decision making for public works departments. This platform connects government agencies, contractors, auditors, and citizens in a transparent ecosystem that enhances public trust while improving infrastructure reliability.
+The Secure Healthcare Provider Credentialing System leverages blockchain technology to create a trusted, immutable record of healthcare practitioner credentials. This system reduces administrative overhead, prevents fraud, and streamlines the credentialing process across healthcare organizations.
 
-## Core Components
+## System Components
 
-The platform consists of four primary smart contracts:
+### Provider Identity Contract
 
-1. **Asset Registration Contract**
-    - Records details of public infrastructure assets
-    - Maintains a comprehensive digital inventory of bridges, roads, water systems, etc.
-    - Stores essential data including location, construction date, materials, and design specifications
-    - Tracks asset ownership and jurisdictional responsibilities
-    - Manages asset lifecycle stages from commissioning to decommissioning
-    - Provides public transparency into infrastructure investments
+This smart contract serves as the foundation of the system, creating a unique digital identity for each healthcare provider.
 
-2. **Inspection Scheduling Contract**
-    - Manages regular condition assessments
-    - Implements risk-based inspection scheduling algorithms
-    - Coordinates inspector assignments and certifications
-    - Tracks inspection history and compliance with regulatory requirements
-    - Stores inspection reports with photo/video evidence
-    - Generates automated alerts for inspection deadlines
+**Key Features:**
+- Secure digital identity creation and verification
+- Management of basic provider information (name, NPI, specialties)
+- Connection to other credential contracts via provider ID
+- Multi-factor authentication for identity verification
+- Audit trail of all identity modifications
 
-3. **Maintenance Tracking Contract**
-    - Monitors repair activities and costs
-    - Records maintenance work orders, approvals, and completions
-    - Tracks expenditures against budgets with line-item transparency
-    - Manages contractor qualifications and performance
-    - Documents materials used and warranty information
-    - Creates immutable audit trails for all maintenance activities
+### Qualification Verification Contract
 
-4. **Performance Measurement Contract**
-    - Evaluates infrastructure reliability and service levels
-    - Implements standardized performance metrics
-    - Tracks asset uptime, service disruptions, and user complaints
-    - Calculates lifecycle cost and maintenance efficiency
-    - Benchmarks performance across similar assets
-    - Provides data for capital planning and replacement decisions
+This contract validates and stores provider qualifications, including medical degrees, certifications, and training.
 
-## Key Benefits
+**Key Features:**
+- Tamper-proof storage of qualification documents
+- Direct verification with issuing institutions
+- Automatic expiration tracking and renewal notifications
+- Verification status visible to authorized parties
+- Historical record of all qualifications
 
-### For Government Agencies:
-- Enhanced accountability and transparency
-- Optimized maintenance scheduling based on condition data
-- Improved budget allocation and resource planning
-- Simplified regulatory compliance and reporting
-- Data-driven decision making for capital investments
-- Reduced administrative overhead and paperwork
+### Hospital Privileging Contract
 
-### For Contractors and Service Providers:
-- Streamlined bidding and procurement processes
-- Transparent payment and approval workflows
-- Digital verification of work completion
-- Historical performance tracking for qualification
-- Reduced payment delays and disputes
-- Enhanced reputation through transparent performance metrics
+This contract manages the specific procedures and services that providers are authorized to perform at each healthcare facility.
 
-### For Citizens and Oversight Bodies:
-- Real-time visibility into infrastructure conditions
-- Transparent tracking of tax dollar expenditures
-- Ability to report issues with direct accountability
-- Confidence in infrastructure safety and reliability
-- Access to anonymized, aggregated performance data
-- Enhanced public trust in government operations
+**Key Features:**
+- Institution-specific privileges management
+- Procedure-level granularity for authorization
+- Temporary and emergency privileging capabilities
+- Automated renewal and review processes
+- Cross-institutional privilege verification
+
+### Insurance Panel Contract
+
+This contract tracks provider participation in various insurance networks and payment programs.
+
+**Key Features:**
+- Insurance network enrollment status
+- Contract terms and billing rates
+- Network-specific identifier management
+- Participation history and changes
+- Real-time verification for claims processing
 
 ## Technical Architecture
 
-The platform is built on:
-- Ethereum blockchain for core smart contract functionality
-- IPFS for decentralized storage of inspection reports and documentation
-- IoT integration for real-time condition monitoring data
-- Mobile applications for field inspections and maintenance
-- GIS integration for spatial visualization and analytics
+The system uses a permissioned blockchain architecture with the following characteristics:
+
+- Smart contracts written in Solidity for Ethereum-based implementation
+- Role-based access control for different stakeholder types
+- HIPAA-compliant data handling
+- Interoperability with existing healthcare IT systems
+- API integration capabilities for third-party applications
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js v16+
+- Node.js (v14+)
 - Truffle Suite
-- MetaMask or compatible Ethereum wallet
-- IPFS node (optional for local development)
+- MetaMask or similar Ethereum wallet
+- Access to an Ethereum testnet or private network
 
 ### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-organization/infrastructure-maintenance.git
-cd infrastructure-maintenance
+git clone https://github.com/your-organization/healthcare-credentialing.git
 
 # Install dependencies
+cd healthcare-credentialing
 npm install
 
-# Compile smart contracts
-truffle compile
-
-# Deploy to local blockchain
-truffle migrate --network development
+# Deploy contracts to your network
+truffle migrate --network [network_name]
 ```
-
-### Configuration
-
-1. Set up environment variables in `.env` file
-2. Configure asset categories and inspection requirements
-3. Set up jurisdiction-specific maintenance standards
-4. Define performance metrics for different asset classes
 
 ## Usage Examples
 
-### Registering an Infrastructure Asset
+### Provider Registration
 
 ```javascript
-const AssetRegistry = artifacts.require("AssetRegistry");
-
-module.exports = async function(callback) {
-  const registry = await AssetRegistry.deployed();
-  
-  await registry.registerAsset(
-    "Memorial Bridge",
-    "Bridge",
-    "42.3601° N, 71.0589° W", // Geographic coordinates
-    1986, // Construction year
-    "Steel truss bridge with concrete deck, 250m span",
-    "City of Riverside",
-    100000000, // Construction cost in cents (1M USD)
-    50, // Expected lifespan in years
-    "ipfs://QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ" // IPFS hash for asset documentation
-  );
-  
-  console.log("Asset registered successfully");
-  callback();
-};
+// Register a new provider
+await ProviderIdentityContract.registerProvider(
+  "Dr. Jane Smith", 
+  "1234567890", // NPI
+  ["Cardiology", "Internal Medicine"], // Specialties
+  providerAddress,
+  additionalData
+);
 ```
 
-### Scheduling an Inspection
+### Verifying Qualifications
 
 ```javascript
-const InspectionScheduling = artifacts.require("InspectionScheduling");
+// Add a new qualification
+await QualificationContract.addQualification(
+  providerId,
+  "Medical Degree",
+  "Harvard Medical School",
+  "2010-05-15", // Issue date
+  "2040-05-15", // Expiration date
+  "ipfs://QmXyz..." // Document hash
+);
 
-module.exports = async function(callback) {
-  const inspection = await InspectionScheduling.deployed();
-  
-  const assetId = 1; // ID from asset registration
-  const scheduledDate = Math.floor(new Date(2025, 5, 15).getTime() / 1000); // June 15, 2025
-  
-  await inspection.scheduleInspection(
-    assetId,
-    "Annual Structural Inspection",
-    scheduledDate,
-    "0x1234567890123456789012345678901234567890", // Inspector address
-    "Professional Engineer, Bridge Inspection Certification", // Inspector qualifications
-    "AASHTO NBIS Standards" // Inspection standards to apply
-  );
-  
-  console.log("Inspection scheduled successfully");
-  callback();
-};
+// Verify a qualification
+const isValid = await QualificationContract.verifyQualification(qualificationId);
 ```
 
-### Recording Maintenance Activity
+### Managing Hospital Privileges
 
 ```javascript
-const MaintenanceTracking = artifacts.require("MaintenanceTracking");
-
-module.exports = async function(callback) {
-  const maintenance = await MaintenanceTracking.deployed();
-  
-  const assetId = 1; // ID from asset registration
-  const completionDate = Math.floor(new Date().getTime() / 1000);
-  
-  await maintenance.recordMaintenance(
-    assetId,
-    "Deck Joint Replacement",
-    "Replacement of 8 expansion joints on main span",
-    completionDate,
-    "0xabcdef1234567890abcdef1234567890abcdef12", // Contractor address
-    7500000, // Cost in cents (75,000 USD)
-    "Emergency Repair Fund", // Budget source
-    "ipfs://QmT9qk3CRYbFDWpDFYeAv8T8n1nTHHUFDRMr5Nh6mZCyGn" // IPFS hash for maintenance documentation
-  );
-  
-  console.log("Maintenance recorded successfully");
-  callback();
-};
+// Grant procedure privileges
+await HospitalPrivilegingContract.grantProcedurePrivilege(
+  providerId,
+  hospitalId,
+  "Coronary Angioplasty",
+  "2023-01-01", // Start date
+  "2025-01-01", // End date
+  approverProviderId
+);
 ```
 
-### Recording Performance Metrics
+### Insurance Network Enrollment
 
 ```javascript
-const PerformanceMeasurement = artifacts.require("PerformanceMeasurement");
-
-module.exports = async function(callback) {
-  const performance = await PerformanceMeasurement.deployed();
-  
-  const assetId = 1; // ID from asset registration
-  const recordDate = Math.floor(new Date().getTime() / 1000);
-  
-  await performance.recordPerformanceMetrics(
-    assetId,
-    recordDate,
-    [
-      "traffic_volume:15000", // Average daily traffic
-      "condition_index:78", // Overall condition score
-      "service_disruptions:2", // Number of closures in period
-      "response_time:48", // Hours to address critical issues
-      "user_complaints:12" // Number of reported issues
-    ],
-    "Q2-2025", // Reporting period
-    "ipfs://QmUNLLsPACCz1vLxQVkXqqLX5R1X345qqfHbsf67hvA3Nn" // IPFS hash for detailed report
-  );
-  
-  console.log("Performance metrics recorded successfully");
-  callback();
-};
+// Enroll provider in insurance network
+await InsurancePanelContract.enrollProvider(
+  providerId,
+  insuranceNetworkId,
+  "PCN1234567", // Provider contract number
+  ["Service A", "Service B"], // Approved services
+  "2023-01-01", // Effective date
+  contractDocumentHash
+);
 ```
 
-## API Documentation
+## Security Considerations
 
-Comprehensive API documentation for all smart contracts is available in the `/docs` directory, generated with NatSpec.
-
-## Mobile Applications
-
-- **Inspector App**: Conduct field inspections with offline capability
-- **Maintenance App**: Record work activities and materials used
-- **Manager Dashboard**: Track assets, inspections, and budgets
-- **Citizen Portal**: View asset conditions and report issues
-- **Contractor Interface**: Bid on projects and submit completion evidence
-
-## Integration Capabilities
-
-- **GIS Systems**: ArcGIS, QGIS for spatial visualization
-- **Asset Management**: Integration with existing CMMS systems
-- **Financial Systems**: Budget tracking and expenditure reporting
-- **IoT Sensors**: Real-time monitoring of critical assets
-- **Regulatory Reporting**: Automated compliance reporting
-
-## Security and Governance
-
-- Role-based access controls for different user types
-- Multi-signature approvals for critical transactions
-- On-chain governance for system parameter updates
-- Transparent audit trails for all system activities
-- Privacy-preserving designs for sensitive infrastructure data
+- All sensitive data is stored off-chain with only hashes stored on the blockchain
+- Multi-signature requirements for critical operations
+- Regular security audits and penetration testing
+- Compliance with healthcare data regulations
+- Disaster recovery procedures
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE.md file for details.
+[Specify your license here]
 
-## Community and Support
+## Contact
 
-- Documentation: [docs.publicinfrastructure.io](https://docs.publicinfrastructure.io)
-- Community forum: [forum.publicinfrastructure.io](https://forum.publicinfrastructure.io)
-- Technical support: support@publicinfrastructure.io
-- Open-source contributions: [github.com/public-infrastructure](https://github.com/public-infrastructure)
-
-## Roadmap
-
-- Q2 2025: Integration with predictive maintenance algorithms
-- Q3 2025: Implementation of citizen feedback mechanisms
-- Q4 2025: Enhanced analytics dashboard with decision support
-- Q1 2026: Machine learning for optimal maintenance scheduling
-- Q2 2026: Climate resilience assessment and planning tools
+[Your organization contact information]
