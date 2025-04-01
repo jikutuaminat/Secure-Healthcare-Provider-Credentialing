@@ -7,3 +7,5 @@ R
 "tests/hospital-privileging.test.ts,f/e/fecd9b429a72e17d014f2f9d3d66a06e13a76238
 N
 contracts/insurance-panel.clar,c/3/c39f2aea7c9747546d55f3e276628bfd0bd198f7
+P
+ contracts/provider-identity.clar,0/f/0fb2c13f958d21cb54a9453b7c747307e11c1271
