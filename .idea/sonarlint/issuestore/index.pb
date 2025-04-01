@@ -5,3 +5,5 @@ S
 #contracts/hospital-privileging.clar,6/e/6e7d76e334132f1b7f6694b4b775665f2c9caad0
 R
 "tests/hospital-privileging.test.ts,f/e/fecd9b429a72e17d014f2f9d3d66a06e13a76238
+N
+contracts/insurance-panel.clar,c/3/c39f2aea7c9747546d55f3e276628bfd0bd198f7
